@@ -1,17 +1,18 @@
-// src/utils/storage.ts
 import { Book } from '../types';
 
 const FAVORITES_KEY = 'biblioteca_favoritos';
 
-// Obtener todos los favoritos
+// --- Lógica de Favoritos ---
+
+// Obtener todos los favoritos desde localStorage[cite: 1]
 export const getFavorites = (): Book[] => {
-  if (typeof window === 'undefined') return []; // Evita errores en el servidor de Next.js
+  if (typeof window === 'undefined') return [];
   
   const data = localStorage.getItem(FAVORITES_KEY);
   return data ? JSON.parse(data) : [];
 };
 
-// Agregar a favoritos (Evitando duplicados)[cite: 1]
+// Agregar a favoritos evitando duplicados[cite: 1]
 export const addFavorite = (book: Book): void => {
   if (typeof window === 'undefined') return;
   
@@ -34,27 +35,45 @@ export const removeFavorite = (key: string): void => {
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavorites));
 };
 
-// Utilidad para que el Integrante 3 filtre los libros fácilmente
-export const filterBooks = (
-  books: Book[], 
-  minYear?: number, 
-  maxYear?: number, 
-  language?: string
-): Book[] => {
-  return books.filter((book) => {
-    const year = book.first_publish_year;
-    
-    // Filtrar por año mínimo
-    if (minYear && (!year || year < minYear)) return false;
-    
-    // Filtrar por año máximo
-    if (maxYear && (!year || year > maxYear)) return false;
-    
-    // Filtrar por idioma
-    if (language && book.language) {
-      if (!book.language.includes(language)) return false;
+// --- Lógica de Filtrado y Ordenamiento (Para el Buscador) ---
+
+// Interfaz local para recibir las opciones del panel
+interface FilterOptions {
+  minYear?: number;
+  maxYear?: number;
+  language?: string;
+  sortBy?: string;
+}
+
+// Filtra y ordena un arreglo de libros
+export const filterAndSortBooks = (books: Book[], filters: FilterOptions): Book[] => {
+  let result = [...books];
+
+  // Filtro: Año mínimo[cite: 1]
+  if (filters.minYear) {
+    result = result.filter(book => book.first_publish_year && book.first_publish_year >= filters.minYear!);
+  }
+
+  // Filtro: Año máximo[cite: 1]
+  if (filters.maxYear) {
+    result = result.filter(book => book.first_publish_year && book.first_publish_year <= filters.maxYear!);
+  }
+
+  // Filtro: Idioma[cite: 1]
+  if (filters.language) {
+    result = result.filter(book => book.language && book.language.includes(filters.language!));
+  }
+
+  // Ordenamiento[cite: 1]
+  if (filters.sortBy) {
+    if (filters.sortBy === 'year_asc') {
+      result.sort((a, b) => (a.first_publish_year || 0) - (b.first_publish_year || 0));
+    } else if (filters.sortBy === 'year_desc') {
+      result.sort((a, b) => (b.first_publish_year || 0) - (a.first_publish_year || 0));
+    } else if (filters.sortBy === 'editions') {
+      result.sort((a, b) => (b.edition_count || 0) - (a.edition_count || 0));
     }
-    
-    return true;
-  });
+  }
+
+  return result;
 };
