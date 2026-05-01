@@ -146,3 +146,19 @@ body {
   }
 }
 
+/*busqueda*/
+.search-form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.search-input,
+.search-select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+
+  font-size: 0.9rem;
+}
