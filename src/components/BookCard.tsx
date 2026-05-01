@@ -1,15 +1,32 @@
 "use client";
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Book } from '../types';
 import { getCoverUrl } from '../services/openLibraryService';
+import { addFavorite, removeFavorite, isBookFavorite } from '../utils/storage';
 
 interface BookCardProps {
   book: Book;
+  onFavoriteToggle?: () => void;
 }
 
-export default function BookCard({ book }: BookCardProps) {
+export default function BookCard({ book, onFavoriteToggle }: BookCardProps) {
   const workId = book.key.replace('/works/', '');
+  const [isFav, setIsFav] = useState(false);
 
+  useEffect(() => {
+    setIsFav(isBookFavorite(book.key));
+  }, [book.key]);
+
+  const handleFavoriteClick = () => {
+    if (isFav) {
+      removeFavorite(book.key);
+    } else {
+      addFavorite(book);
+    }
+    setIsFav(!isFav);
+    if (onFavoriteToggle) onFavoriteToggle(); 
+  };
   return (
     <div className="book-card">
       <img 
@@ -27,8 +44,11 @@ export default function BookCard({ book }: BookCardProps) {
           <Link href={`/libro/${workId}`} className="btn-primary">
             Ver detalle
           </Link>
-          <button className="btn-warning">
-            ⭐ Favoritos
+          <button 
+            className={`btn-warning ${isFav ? 'active' : ''}`} 
+            onClick={handleFavoriteClick}
+          >
+            {isFav ? "❤️ Quitar" : "⭐ Favoritos"}
           </button>
         </div>
       </div>

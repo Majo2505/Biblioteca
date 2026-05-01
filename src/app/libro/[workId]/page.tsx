@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState, use } from 'react';
 import { getBookDetail, getCoverUrl } from '../../../services/openLibraryService';
-import { BookDetail } from '../../../types';
+import { BookDetail,Book } from '../../../types';
+import { addFavorite, removeFavorite, getFavorites } from '../../../utils/storage';
 import Loading from '../../../components/Loading';
 import ErrorMessage from '../../../components/ErrorMessage';
 import Link from 'next/link';
@@ -10,9 +11,12 @@ export default function BookDetailPage({ params }: { params: Promise<{ workId: s
   const [book, setBook] = useState<BookDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const resolvedParams = use(params);
   const workId = resolvedParams.workId;
+  const fullKey = `/works/${workId}`;
+
   useEffect(() => {
     const fetchDetail = async () => {
       try {
@@ -20,6 +24,8 @@ export default function BookDetailPage({ params }: { params: Promise<{ workId: s
         const data = await getBookDetail(workId);
         if (data) {
           setBook(data);
+          const favs = getFavorites();
+          setIsFavorite(favs.some((f) => f.key === fullKey));
         } else {
           setError('No se pudo encontrar el detalle de este libro.');
         }
@@ -31,7 +37,26 @@ export default function BookDetailPage({ params }: { params: Promise<{ workId: s
     };
 
     fetchDetail();
-  }, [workId]);
+  }, [workId,fullKey]);
+
+  const handleToggleFavorite = () => {
+    if (!book) return;
+
+    if (isFavorite) {
+      removeFavorite(fullKey);
+      setIsFavorite(false);
+    } else {
+      const bookToSave: Book = {
+        key: fullKey,
+        title: book.title,
+        author_name: book.authors?.map((a: any) => a.name || "Desconocido") || [],
+        first_publish_year: book.first_publish_date ? parseInt(book.first_publish_date) : undefined,
+        cover_i: book.covers?.[0],
+      };
+      addFavorite(bookToSave); 
+      setIsFavorite(true);
+    }
+  };
 
   if (loading) return <Loading />;
   if (error) return <ErrorMessage message={error} />;
@@ -88,7 +113,12 @@ export default function BookDetailPage({ params }: { params: Promise<{ workId: s
             >
               Ver en Open Library
             </a>
-            <button className="btn-warning">⭐ Agregar a Favoritos</button>
+            <button 
+              className={`btn-warning ${isFavorite ? 'active' : ''}`} 
+              onClick={handleToggleFavorite}
+            >
+              {isFavorite ? "❤️ Quitar de Favoritos" : "⭐ Agregar a Favoritos"}
+            </button>
           </div>
         </div>
       </div>

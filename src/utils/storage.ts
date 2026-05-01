@@ -12,6 +12,12 @@ export const getFavorites = (): Book[] => {
   return data ? JSON.parse(data) : [];
 };
 
+//Verifica si un libro ya esta en favoritos
+export const isBookFavorite = (key: string): boolean => {
+  const favorites = getFavorites();
+  return favorites.some((fav) => fav.key === key);
+};
+
 // Agregar a favoritos evitando duplicados[cite: 1]
 export const addFavorite = (book: Book): void => {
   if (typeof window === 'undefined') return;

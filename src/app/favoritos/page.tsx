@@ -7,8 +7,14 @@ import BookCard from '../../components/BookCard';
 export default function FavoritesPage() {
   const [favorites, setFavorites] = useState<Book[]>([]);
 
+  const loadFavorites = () => {
+    const savedFavs = getFavorites();
+    setFavorites(savedFavs);
+  };
+
+
   useEffect(() => {
-    setFavorites(getFavorites());
+    loadFavorites();
   }, []);
 
   return (
@@ -20,7 +26,11 @@ export default function FavoritesPage() {
       ) : (
         <div className="book-grid">
           {favorites.map((book) => (
-            <BookCard key={book.key} book={book} />
+            <BookCard 
+              key={book.key} 
+              book={book} 
+              onFavoriteToggle={loadFavorites} 
+            />
           ))}
         </div>
       )}
