@@ -189,3 +189,46 @@ body {
   gap: 0.5rem;
   align-items: end;
 }
+
+/*detalles*/
+.detail-card {
+  display: flex;
+  gap: 2rem;
+
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 12px;
+
+  box-shadow: var(--shadow);
+
+  flex-wrap: wrap;
+}
+
+.detail-image {
+  width: 220px;
+  border-radius: 8px;
+}
+
+.detail-content {
+  flex: 1;
+}
+
+.detail-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.detail-section {
+  margin-top: 1rem;
+}
+
+.detail-description {
+  margin-top: 0.5rem;
+  color: var(--text-light);
+}
+
+.detail-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
