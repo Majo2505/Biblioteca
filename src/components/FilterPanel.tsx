@@ -83,7 +83,7 @@ export default function FilterPanel({ onFilterChange }: FilterPanelProps) {
 
       <div className="filter-actions">
         <button type="submit" className="btn-primary">Aplicar Filtros</button>
-        <button type="button" onClick={handleReset} className="btn-secondary">Limpiar</button>
+        <button type="button" onClick={handleReset} className="btn-primary">Limpiar</button>
       </div>
     </form>
   );

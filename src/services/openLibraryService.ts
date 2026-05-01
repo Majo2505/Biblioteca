@@ -11,7 +11,15 @@ export const searchBooks = async (query: string, type: 'q' | 'title' | 'author' 
     if (!response.ok) throw new Error('Error en la búsqueda');
     
     const data = await response.json();
-    return data.docs as Book[];
+    return data.docs.map((doc:any) => ({
+      key: doc.key,
+      title: doc.title,
+      author_name: doc.author_name || ['Autor desconocido'],
+      first_publish_year: doc.first_publish_year,
+      cover_i: doc.cover_i,
+      edition_count: doc.edition_count || 1,
+      language: doc.language || []
+    })) as Book[];
   } catch (error) {
     console.error("Error en searchBooks:", error);
     return [];
