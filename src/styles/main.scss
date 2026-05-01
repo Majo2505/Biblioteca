@@ -32,3 +32,34 @@ body {
   margin-bottom: 1.5rem;
   font-weight: 600;
 }
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+
+  background: var(--primary);
+  color: white;
+
+  box-shadow: var(--shadow);
+
+  &-list {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  &-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+
+    transition: 0.2s;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
