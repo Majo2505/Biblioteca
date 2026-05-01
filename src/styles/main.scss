@@ -63,3 +63,86 @@ body {
     }
   }
 }
+
+/*grid cards y botones*/
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.book-card {
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+
+  box-shadow: var(--shadow);
+
+  transition: 0.3s;
+
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-6px);
+  }
+
+  &-image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+  }
+
+  &-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  &-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 0.5rem;
+  }
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+  font-size: 0.9rem;
+
+  transition: 0.2s;
+
+  &:hover {
+    background: var(--primary-dark);
+  }
+}
+
+.btn-warning {
+  background: #ffb300;
+  border: none;
+
+  padding: 0.5rem;
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+
+  &:hover {
+    background: #ffa000;
+  }
+}
+
