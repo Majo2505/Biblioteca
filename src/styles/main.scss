@@ -1,0 +1,34 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Variables*/ 
+:root {
+  --primary: #4CAF50;
+  --primary-dark: #2e7d32;
+  --accent: #a5d6a7;
+
+  --bg: #f4f6f4;
+  --card: #ffffff;
+
+  --text: #1b1b1b;
+  --text-light: #555;
+
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/*body*/
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.page-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
