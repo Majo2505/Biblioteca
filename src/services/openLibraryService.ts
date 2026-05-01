@@ -4,10 +4,10 @@ import { Book, BookDetail } from '../types';
 const BASE_URL = 'https://openlibrary.org';
 
 // Función 1: Buscar libros (por título, autor o general)
-export const searchBooks = async (query: string, type: 'q' | 'title' | 'author' = 'q'): Promise<Book[]> => {
+export const searchBooks = async (query: string, type: 'q' | 'title' | 'author' = 'q', limit: number = 20): Promise<Book[]> => {
   try {
     // Permite buscar general (?q=), por título (?title=) o autor (?author=)
-    const response = await fetch(`${BASE_URL}/search.json?${type}=${encodeURIComponent(query)}`);
+    const response = await fetch(`${BASE_URL}/search.json?${type}=${encodeURIComponent(query)}&limit=${limit}`);
     if (!response.ok) throw new Error('Error en la búsqueda');
     
     const data = await response.json();
@@ -36,13 +36,22 @@ export const getBookDetail = async (id: string): Promise<BookDetail | null> => {
 };
 
 // Función 3: Buscar libros por tema/categoría
-export const getBooksBySubject = async (topic: string): Promise<Book[]> => {
+export const getBooksBySubject = async (topic: string, limit: number = 12): Promise<Book[]> => {
   try {
-    const response = await fetch(`${BASE_URL}/search.json?subject=${encodeURIComponent(topic)}`);
+    const response = await fetch(`${BASE_URL}/subjects/${topic.toLocaleLowerCase()}.json?limit=${limit}`);
     if (!response.ok) throw new Error('Error al buscar por tema');
     
     const data = await response.json();
-    return data.docs as Book[];
+
+
+    return data.works.map((work:any) =>({
+      key: work.key,
+      title: work.title,
+      author_name: work.authors?.map((a: any) => a.name) || ['Autor desconocido'],
+      first_publish_year: work.first_publish_year,
+      cover_i: work.cover_id,
+      edition_count: work.edition_count
+    })) as Book[];
   } catch (error) {
     console.error("Error en getBooksBySubject:", error);
     return [];

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { searchBooks } from '../services/openLibraryService';
+import { getBooksBySubject, searchBooks } from '../services/openLibraryService';
 import { Book } from '../types';
 import BookCard from '../components/BookCard';
 import Loading from '../components/Loading';
@@ -15,7 +15,7 @@ export default function HomePage() {
     const fetchInitialBooks = async () => {
       try {
         setLoading(true);
-        const results = await searchBooks('programming');
+        const results = await getBooksBySubject('programming');
         setBooks(results.slice(0, 12)); 
       } catch (err) {
         setError('Hubo un error al cargar los libros populares.');
