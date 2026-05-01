@@ -44,9 +44,11 @@ export const getBookDetail = async (id: string): Promise<BookDetail | null> => {
 };
 
 // Función 3: Buscar libros por tema/categoría
-export const getBooksBySubject = async (topic: string, limit: number = 12): Promise<Book[]> => {
+export const getBooksBySubject = async (topic: string, limit: number = 12, page: number=1): Promise<Book[]> => {
   try {
-    const response = await fetch(`${BASE_URL}/subjects/${topic.toLocaleLowerCase()}.json?limit=${limit}`);
+
+    const offset = (page - 1) * limit;
+    const response = await fetch(`${BASE_URL}/subjects/${topic.toLocaleLowerCase()}.json?limit=${limit}&offset=${offset}`);
     if (!response.ok) throw new Error('Error al buscar por tema');
     
     const data = await response.json();
