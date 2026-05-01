@@ -10,7 +10,7 @@ export default function AboutPage() {
           <li><strong>Equipo de Desarrollo:</strong>
             <br />• Maria Jose Sandoval Orellana
             <br />• Flora Angelina Ortiz Rojas
-            <br />• Alejandro Machaca
+            <br />• Alejandro Machaca Villena
           </li>
           <li><strong>Universidad:</strong> Universidad Católica Boliviana "San Pablo"</li>
           <li><strong>Docente:</strong> Ing. Mauricio Alejandro Quezada Bustillo</li>
