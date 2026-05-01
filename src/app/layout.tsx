@@ -1,7 +1,7 @@
 import Navbar from '@/components/Navbar';
 // Si rescataste tu globals.css y lo moviste, impórtalo aquí. 
 // Si no, puedes omitir esta línea por ahora.
-import './globals.css'; 
+import '../styles/main.scss'; 
 
 export const metadata = {
   title: 'Biblioteca Inteligente',
