@@ -162,3 +162,30 @@ body {
 
   font-size: 0.9rem;
 }
+
+/*filtros*/
+.filter-panel {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.filter-input,
+.filter-select {
+  padding: 0.4rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: end;
+}
