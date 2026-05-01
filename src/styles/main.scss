@@ -17,20 +17,31 @@
   --text-light: #555;
 
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+  --radius: 12px;
 }
 
 /*body*/
 body {
   font-family: "Segoe UI", sans-serif;
-  background: var(--bg);
+  background: linear-gradient(to bottom, #f4f6f4, #eef2ee);
   color: var(--text);
   line-height: 1.5;
 }
 
+/* CONTENEDOR GENERAL */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* TITULOS */
 .page-title {
   font-size: 2rem;
   margin-bottom: 1.5rem;
   font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 /* Navbar */
@@ -40,7 +51,7 @@ body {
   align-items: center;
   padding: 1rem 2rem;
 
-  background: var(--primary);
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
   color: white;
 
   box-shadow: var(--shadow);
@@ -55,11 +66,28 @@ body {
     color: white;
     text-decoration: none;
     font-weight: 500;
+    position: relative;
 
     transition: 0.2s;
 
     &:hover {
       opacity: 0.8;
+    }
+
+    /* subrayado animado */
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 0%;
+      height: 2px;
+      background: white;
+      transition: 0.3s;
+    }
+
+    &:hover::after {
+      width: 100%;
     }
   }
 }
@@ -71,26 +99,36 @@ body {
   gap: 1.5rem;
 }
 
+/* CARD */
 .book-card {
   background: var(--card);
-  border-radius: 12px;
+  border-radius: var(--radius);
   overflow: hidden;
 
   box-shadow: var(--shadow);
 
-  transition: 0.3s;
+  transition: all 0.3s ease;
 
   display: flex;
   flex-direction: column;
 
+  cursor: pointer;
+
   &:hover {
-    transform: translateY(-6px);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: var(--shadow-hover);
   }
 
   &-image {
     width: 100%;
     height: 280px;
     object-fit: cover;
+
+    transition: 0.3s;
+  }
+
+  &:hover &-image {
+    transform: scale(1.05);
   }
 
   &-content {
@@ -112,6 +150,7 @@ body {
   }
 }
 
+/* BOTONES */
 .btn-primary {
   background: var(--primary);
   color: white;
@@ -123,10 +162,15 @@ body {
   cursor: pointer;
   font-size: 0.9rem;
 
-  transition: 0.2s;
+  transition: all 0.2s ease;
 
   &:hover {
     background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 }
 
@@ -139,10 +183,15 @@ body {
 
   cursor: pointer;
 
-  transition: 0.2s;
+  transition: all 0.2s ease;
 
   &:hover {
     background: #ffa000;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 }
 
@@ -161,6 +210,14 @@ body {
   border: 1px solid #ccc;
 
   font-size: 0.9rem;
+
+  transition: 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
 }
 
 /*filtros*/
@@ -182,6 +239,13 @@ body {
   padding: 0.4rem;
   border-radius: 6px;
   border: 1px solid #ccc;
+
+  transition: 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
 }
 
 .filter-actions {
@@ -197,11 +261,13 @@ body {
 
   background: var(--card);
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: var(--radius);
 
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-hover);
 
   flex-wrap: wrap;
+
+  animation: fadeIn 0.3s ease;
 }
 
 .detail-image {
@@ -225,6 +291,7 @@ body {
 .detail-description {
   margin-top: 0.5rem;
   color: var(--text-light);
+  line-height: 1.6;
 }
 
 .detail-actions {
@@ -240,6 +307,19 @@ body {
   margin-top: 1.5rem;
   font-size: 1.2rem;
   color: var(--text-light);
+  text-align: center;
+}
+
+/* ANIMACIONES */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /*resposinve*/
@@ -251,5 +331,10 @@ body {
 
   .detail-image {
     width: 180px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }
