@@ -1,21 +1,23 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { getBookDetail, getCoverUrl } from '../../../services/openLibraryService';
 import { BookDetail } from '../../../types';
 import Loading from '../../../components/Loading';
 import ErrorMessage from '../../../components/ErrorMessage';
 import Link from 'next/link';
 
-export default function BookDetailPage({ params }: { params: { workId: string } }) {
+export default function BookDetailPage({ params }: { params: Promise<{ workId: string }> }) {
   const [book, setBook] = useState<BookDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const resolvedParams = use(params);
+  const workId = resolvedParams.workId;
   useEffect(() => {
     const fetchDetail = async () => {
       try {
         setLoading(true);
-        const data = await getBookDetail(params.workId);
+        const data = await getBookDetail(workId);
         if (data) {
           setBook(data);
         } else {
@@ -29,7 +31,7 @@ export default function BookDetailPage({ params }: { params: { workId: string } 
     };
 
     fetchDetail();
-  }, [params.workId]);
+  }, [workId]);
 
   if (loading) return <Loading />;
   if (error) return <ErrorMessage message={error} />;
@@ -57,6 +59,13 @@ export default function BookDetailPage({ params }: { params: { workId: string } 
         <div className="detail-content">
           <h1 className="detail-title">{book.title}</h1>
           <p><strong>Fecha de publicación:</strong> {book.first_publish_date || 'N/D'}</p>
+
+          {book.authors && (
+            <p>
+              <strong>Autores:</strong>{" "}
+              {book.authors.map((a: any) => a.name || a.author?.key || "Desconocido").join(', ')}
+            </p>
+          )}
           
           <div className="detail-section">
             <strong>Descripción:</strong>
@@ -72,7 +81,7 @@ export default function BookDetailPage({ params }: { params: { workId: string } 
 
           <div className="detail-actions">
             <a 
-              href={`https://openlibrary.org/works/${params.workId}`} 
+              href={`https://openlibrary.org/works/${workId}`} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="btn-primary"

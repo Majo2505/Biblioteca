@@ -11,6 +11,11 @@ export interface Book {
   language?: string[];       // Útil para los filtros del Integrante 3
 }
 
+export interface Author {
+  key: string;
+  name: string;
+}
+
 // Estructura detallada cuando entras a la página del libro
 export interface BookDetail {
   key: string;
@@ -19,6 +24,7 @@ export interface BookDetail {
   covers?: number[];
   subjects?: string[];
   first_publish_date?: string;
+  authors?: { author: { key: string }; name?: string }[] | Author[];
 }
 
 // Estructura para el autor (por si el Integrante 3 lo necesita)
