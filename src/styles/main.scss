@@ -322,6 +322,15 @@ main {
   }
 }
 
+/*modo oscuro*/
+body.dark {
+  --bg: #121212;
+  --card: #1e1e1e;
+  --text: #f1f1f1;
+  --text-light: #ccc;
+  background: linear-gradient(to bottom, #121212, #1e1e1e);
+}
+
 /*resposinve*/
 @media (max-width: 768px) {
   .detail-card {
